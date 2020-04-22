@@ -24,7 +24,7 @@ for f in list_files:
                     timestamp = str_time(row[5]).strftime("%H:%M:%S")
                 else:
                     timestamp = row[5]
-                new_line = [row[4], row[0], timestamp]
+                new_line = [row[4], row[0][2:4], timestamp]
                 new_rows.append(new_line)
                 students.add(row[4])
 
