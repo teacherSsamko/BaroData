@@ -3,6 +3,9 @@ import datetime
 
 def str_time(str_for_date):
     # str_for_date = '2020. 4. 20. 오전 10:39:58'
+    # print(str_for_date)
+    # if str_for_date == '출결':
+    #     return str_for_date
     str_split = str_for_date.split(" ")
     str_split = str_split[3:]
     # print(str_split)
@@ -14,4 +17,4 @@ def str_time(str_for_date):
 
     str_for_date = "".join(str_split)
     # print(str_for_date)
-    return datetime.datetime.strptime(str_for_date, "%p%H:%M:%S")
+    return datetime.datetime.strptime(str_for_date, "%p%I:%M:%S")

@@ -2,6 +2,8 @@ import csv
 import os
 from math import ceil
 from os import listdir
+from datetime import datetime
+
 from str_datetime import str_time
 
 list_files = listdir("roll_list/")
@@ -18,7 +20,11 @@ for f in list_files:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
         for row in reader:
             if row and row[4] != '':
-                new_line = [row[4], row[0], row[5]]
+                if row[5] != '출결' and row[5] != '결석':
+                    timestamp = str_time(row[5]).strftime("%H:%M:%S")
+                else:
+                    timestamp = row[5]
+                new_line = [row[4], row[0], timestamp]
                 new_rows.append(new_line)
                 students.add(row[4])
 
