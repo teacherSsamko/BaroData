@@ -17,13 +17,13 @@ for f in list_files:
         for row in reader:
             print(' '.join(row))
             if row and row[4] != '':
-                new_line = ','.join([row[4], row[0], row[5]])
+                # new_line = ','.join([row[4], row[0], row[5]])
+                new_line = [row[4], row[0], row[5]]
                 new_rows.append(new_line)
 
     with open('sample.csv', 'w', newline='') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=',',
-                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        writer = csv.writer(csvfile)
         for row in new_rows:
             print(row)
-            spamwriter.writerow(row)
+            writer.writerow(row)
     break
