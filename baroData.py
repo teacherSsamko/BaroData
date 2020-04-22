@@ -2,7 +2,7 @@ import csv
 import os
 from math import ceil
 from os import listdir
-from datetime import datetime
+from datetime import datetime, time
 
 from str_datetime import str_time
 
@@ -51,14 +51,27 @@ for f in list_files:
     temp = []
     for i in range(len(order_by_timetable)):
         if i == (s_num + 1) * i:
+            order_by_timetable[i].append('소요시간')
             reordered.append(order_by_timetable[i])
             continue
         if not i % 5 == 0:
             temp.append(order_by_timetable[i])
         else:
             temp.append(order_by_timetable[i])
-            print(temp)
+            # print(temp)
             temp.sort(key=lambda temp: temp[2])
+            # 소요시간 계산을 위한 temp2
+            temp2 = [temp[0]] + temp[:-1]
+
+            for i in range(len(temp)):
+
+                if temp[i][2] != '결석':
+                    elapsed = datetime.strptime(
+                        temp[i][2], "%H:%M:%S") - datetime.strptime(temp2[i][2], "%H:%M:%S")
+                    dt = datetime(2020, 1, 1, 0, 0, 0) + elapsed
+                    temp[i].append(f'({dt.time()})')
+                else:
+                    temp[i].append('-')
             for item in temp:
                 reordered.append(item)
             temp = []
