@@ -2,9 +2,9 @@ import csv
 import os
 from math import ceil
 from os import listdir
+from str_datetime import str_time
 
 list_files = listdir("roll_list/")
-print(list_files)
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 LIST_DIR = os.path.join(BASE_DIR, "roll_list/")
@@ -16,11 +16,8 @@ for f in list_files:
     # 기존의 파일 읽기
     with open(file_csv, newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-        # next(reader)
         for row in reader:
-            # print(' '.join(row))
             if row and row[4] != '':
-                # new_line = ','.join([row[4], row[0], row[5]])
                 new_line = [row[4], row[0], row[5]]
                 new_rows.append(new_line)
                 students.add(row[4])
@@ -45,5 +42,3 @@ for f in list_files:
                 writer.writerow(new_rows[i + subject_index * s])
                 if i == 0:
                     break
-
-                # writer.writerow(new_rows[i + s_num + 1])
