@@ -33,7 +33,9 @@ for f in list_files:
     file_name = '(이름순)' + f
     RESULT_DIR = os.path.join(BASE_DIR, 'results/')
     result_file = os.path.join(RESULT_DIR, file_name)
-    with open(result_file, 'w', newline='') as csvfile:
+    new_rows[0] = ['이름', '차시', '출결']
+    # window에서는 encoding ='cp949'
+    with open(result_file, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         # 1번 부터 번호순으로
         for i in range(s_num + 1):
@@ -41,6 +43,7 @@ for f in list_files:
             for s in range(subjects_count):
                 subject_index = s_num + 1
                 writer.writerow(new_rows[i + subject_index * s])
+                if i == 0:
+                    break
 
                 # writer.writerow(new_rows[i + s_num + 1])
-
