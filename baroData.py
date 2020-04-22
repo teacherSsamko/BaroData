@@ -32,19 +32,55 @@ for f in list_files:
     s_num = len(students)
     # count about subjects
     subjects_count = ceil(len(new_rows) // s_num)
+    new_rows[0] = ['이름', '차시', '출결']
+
+    # 학생 이름으로 과목 모으기
+    # 1번 부터 번호순으로
+    order_by_timetable = []
+    for i in range(s_num + 1):
+        # 한 과목씩
+        for s in range(subjects_count):
+            subject_index = s_num + 1
+            order_by_timetable.append(new_rows[i + subject_index * s])
+            # header는 한 번만
+            if i == 0:
+                break
+
+    # 이수 시간을 기준으로 과목 재정렬하기
+    reordered = []
+    temp = []
+    for i in range(len(order_by_timetable)):
+        if i == (s_num + 1) * i:
+            reordered.append(order_by_timetable[i])
+            continue
+        if not i % 6 == 0:
+            temp.append(order_by_timetable[i])
+        else:
+            temp.sort(key=lambda temp: temp[2])
+            for item in temp:
+                reordered.append(item)
+            temp = []
+            temp.append(order_by_timetable[i])
+
     # 새로운 파일에 쓰기
     file_name = '(이름순)' + f
     RESULT_DIR = os.path.join(BASE_DIR, 'results/')
     result_file = os.path.join(RESULT_DIR, file_name)
-    new_rows[0] = ['이름', '차시', '출결']
+
     # window에서는 encoding ='cp949'
     with open(result_file, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
-        # 1번 부터 번호순으로
-        for i in range(s_num + 1):
-            # 한 과목씩
-            for s in range(subjects_count):
-                subject_index = s_num + 1
-                writer.writerow(new_rows[i + subject_index * s])
-                if i == 0:
-                    break
+        for row in reordered:
+            writer.writerow(row)
+
+    # # window에서는 encoding ='cp949'
+    # with open(result_file, 'w', newline='', encoding='utf-8') as csvfile:
+    #     writer = csv.writer(csvfile)
+    #     # 1번 부터 번호순으로
+    #     for i in range(s_num + 1):
+    #         # 한 과목씩
+    #         for s in range(subjects_count):
+    #             subject_index = s_num + 1
+    #             writer.writerow(new_rows[i + subject_index * s])
+    #             if i == 0:
+    #                 break
