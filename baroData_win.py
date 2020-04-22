@@ -6,7 +6,7 @@ from datetime import datetime, time, timedelta
 
 from str_datetime import str_time
 
-list_files = listdir("roll_list")
+list_files = listdir("roll_list/")
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 LIST_DIR = os.path.join(BASE_DIR, "roll_list/")
@@ -16,7 +16,7 @@ for f in list_files:
     new_rows = []
     students = set()
     # 기존의 파일 읽기
-    with open(file_csv, newline='') as csvfile:
+    with open(file_csv, newline='', encoding='UTF-8') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
         for row in reader:
             if row and row[4] != '':
@@ -85,8 +85,8 @@ for f in list_files:
     result_file = os.path.join(RESULT_DIR, file_name)
 
     # window에서는 encoding ='cp949'
-    # with open(result_file, 'w', newline='', encoding='cp949') as csvfile:
-    with open(result_file, 'w', newline='', encoding='utf-8') as csvfile:
+    with open(result_file, 'w', newline='', encoding='cp949') as csvfile:
+    # with open(result_file, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         for row in reordered:
             writer.writerow(row)
