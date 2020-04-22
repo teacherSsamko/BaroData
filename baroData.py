@@ -53,14 +53,15 @@ for f in list_files:
         if i == (s_num + 1) * i:
             reordered.append(order_by_timetable[i])
             continue
-        if not i % 6 == 0:
+        if not i % 5 == 0:
             temp.append(order_by_timetable[i])
         else:
+            temp.append(order_by_timetable[i])
+            print(temp)
             temp.sort(key=lambda temp: temp[2])
             for item in temp:
                 reordered.append(item)
             temp = []
-            temp.append(order_by_timetable[i])
 
     # 새로운 파일에 쓰기
     file_name = '(이름순)' + f
@@ -68,6 +69,7 @@ for f in list_files:
     result_file = os.path.join(RESULT_DIR, file_name)
 
     # window에서는 encoding ='cp949'
+    # with open(result_file, 'w', newline='', encoding='cp949') as csvfile:
     with open(result_file, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         for row in reordered:
