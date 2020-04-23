@@ -4,6 +4,7 @@ import os
 
 from str_datetime import str_time
 
+
 class proc_csv:
     def __init__(self, reader):
         self.reader = reader
@@ -14,12 +15,13 @@ class proc_csv:
     def remove_issue(self):
         for row in self.reader:
             # print(row)
+            # 문제 있는 row 패스
             if len(row) < 3:
                 # print(row)
                 # print('lower than 3')
                 continue
             if row[5] != '출결' and row[5] != '결석':
-                    timestamp = str_time(row[5]).strftime("%H:%M:%S")
+                timestamp = str_time(row[5]).strftime("%H:%M:%S")
             else:
                 timestamp = row[5]
             new_line = [row[4], row[0][2:4], timestamp]
@@ -35,4 +37,3 @@ class proc_csv:
             writer = csv.writer(csvfile)
             for row in self.new_rows:
                 writer.writerow(row)
-
