@@ -4,8 +4,8 @@ from math import ceil
 from os import listdir
 from datetime import datetime, time, timedelta
 
-# from str_datetime import str_time
-from preproc_csv import proc_csv
+
+from prepros_csv import proc_csv
 
 list_files = listdir("roll_list")
 
@@ -22,20 +22,11 @@ for f in list_files:
     # with open(file_csv, newline='', encoding='UTF-8') as csvfile:
     with open(file_csv, newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-        # for row in reader:
-        #     if row and row[4] != '':
-        #         if row[5] != '출결' and row[5] != '결석':
-        #             timestamp = str_time(row[5]).strftime("%H:%M:%S")
-        #         else:
-        #             timestamp = row[5]
-        #         new_line = [row[4], row[0][2:4], timestamp]
-        #         new_rows.append(new_line)
-        #         students.add(row[4])
         post_reader = proc_csv(reader)
 
     # 전처리 데이터 출력 - 확인용
     # post_reader.write_post_csv(f, os.path.join(BASE_DIR, 'results/'))
-    # students.remove('이름')
+
     s_num = len(post_reader.students)
     # count about subjects
     subjects_count = ceil(len(post_reader.new_rows) // s_num)
@@ -48,7 +39,8 @@ for f in list_files:
         # 한 과목씩
         for s in range(subjects_count):
             subject_index = s_num + 1
-            order_by_timetable.append(post_reader.new_rows[i + subject_index * s])
+            order_by_timetable.append(
+                post_reader.new_rows[i + subject_index * s])
             # header는 한 번만
             if i == 0:
                 break
@@ -91,23 +83,9 @@ for f in list_files:
     RESULT_DIR = os.path.join(BASE_DIR, 'results/')
     result_file = os.path.join(RESULT_DIR, file_name)
 
-    
-
     # window에서는 encoding ='cp949'
     # with open(result_file, 'w', newline='', encoding='cp949') as csvfile:
     with open(result_file, 'w', newline='', encoding='utf-8') as csvfile:
         writer = csv.writer(csvfile)
         for row in reordered:
             writer.writerow(row)
-
-    # # window에서는 encoding ='cp949'
-    # with open(result_file, 'w', newline='', encoding='utf-8') as csvfile:
-    #     writer = csv.writer(csvfile)
-    #     # 1번 부터 번호순으로
-    #     for i in range(s_num + 1):
-    #         # 한 과목씩
-    #         for s in range(subjects_count):
-    #             subject_index = s_num + 1
-    #             writer.writerow(new_rows[i + subject_index * s])
-    #             if i == 0:
-    #                 break
