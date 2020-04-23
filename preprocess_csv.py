@@ -8,26 +8,31 @@ from str_datetime import str_time
 class proc_csv:
     def __init__(self, reader):
         self.reader = reader
+        self.preprocessed = []
         self.new_rows = []
         self.students = set()
-        self.remove_issue()
+        self.preprocess()
+        self.deal_csv()
 
-    def remove_issue(self):
+    def deal_csv(self):
+        for row in self.preprocessed:
+            new_line = [row[4], row[0][2:4], row[5]]
+            self.new_rows.append(new_line)
+            self.students.add(row[4])
+        self.students.remove('이름')
+
+    def preprocess(self):
         for row in self.reader:
-            # print(row)
-            # 문제 있는 row 패스
             if len(row) < 3:
-                # print(row)
-                # print('lower than 3')
+                if len(row) > 1:
+                    self.preprocessed[-1].extend(row[1:])
                 continue
             if row[5] != '출결' and row[5] != '결석':
                 timestamp = str_time(row[5]).strftime("%H:%M:%S")
             else:
                 timestamp = row[5]
-            new_line = [row[4], row[0][2:4], timestamp]
-            self.new_rows.append(new_line)
-            self.students.add(row[4])
-        self.students.remove('이름')
+            row[5] = timestamp
+            self.preprocessed.append(row)
 
     def write_post_csv(self, file, dir):
         # 새로운 파일에 쓰기
@@ -35,5 +40,5 @@ class proc_csv:
         result_file = os.path.join(dir, file_name)
         with open(result_file, 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.writer(csvfile)
-            for row in self.new_rows:
+            for row in self.preprocessed:
                 writer.writerow(row)
